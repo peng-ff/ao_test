@@ -25,6 +25,14 @@ public class Square {
     }
 
     /**
+     * 计算正方形周长
+     * @return 周长 = 边长 × 4
+     */
+    public double calculatePerimeter() {
+        return sideLength * 4;
+    }
+
+    /**
      * 获取边长
      * @return 边长值
      */
