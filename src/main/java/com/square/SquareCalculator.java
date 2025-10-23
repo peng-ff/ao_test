@@ -16,7 +16,7 @@ public class SquareCalculator {
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("==============================");
-        System.out.println("   正方形面积计算程序");
+        System.out.println("   正方形计算程序");
         System.out.println("==============================");
         
         try {
@@ -26,12 +26,13 @@ public class SquareCalculator {
             // 验证输入
             double sideLength = validateInput(input);
             
-            // 创建正方形对象并计算面积
+            // 创建正方形对象并计算面积和周长
             Square square = new Square(sideLength);
             double area = square.calculateArea();
+            double perimeter = square.calculatePerimeter();
             
             // 显示结果
-            displayResult(sideLength, area);
+            displayResult(sideLength, area, perimeter);
             
         } catch (IllegalArgumentException e) {
             System.out.println("错误: " + e.getMessage());
@@ -68,13 +69,15 @@ public class SquareCalculator {
      * 显示计算结果
      * @param sideLength 边长
      * @param area 面积
+     * @param perimeter 周长
      */
-    private static void displayResult(double sideLength, double area) {
+    private static void displayResult(double sideLength, double area, double perimeter) {
         System.out.println("\n==============================");
         System.out.println("计算结果:");
         System.out.println("------------------------------");
         System.out.printf("边长: %.2f%n", sideLength);
         System.out.printf("面积: %.2f%n", area);
+        System.out.printf("周长: %.2f%n", perimeter);
         System.out.println("==============================");
     }
 }
