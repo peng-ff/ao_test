@@ -1,0 +1,53 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: checkin-system
+  
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/checkin_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+    # HikariCP 连接池配置
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: CheckInHikariPool
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.square.checkin.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    default-statement-timeout: 5
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.square.checkin: DEBUG
+    com.square.checkin.repository: DEBUG
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+  file:
+    name: logs/checkin-system.log
+    max-size: 10MB
+    max-history: 30
+
+# 业务配置
+checkin:
+  history:
+    max-page-size: 100
+    default-page-size: 20

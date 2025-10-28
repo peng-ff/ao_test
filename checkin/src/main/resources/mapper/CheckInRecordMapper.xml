@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.square.checkin.repository.CheckInRecordRepository">
+    
+    <!-- 结果映射 -->
+    <resultMap id="CheckInRecordMap" type="com.square.checkin.entity.CheckInRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="check_in_date" property="checkInDate"/>
+        <result column="check_in_time" property="checkInTime"/>
+        <result column="continuous_days" property="continuousDays"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+    
+    <!-- 插入签到记录 -->
+    <insert id="insert" parameterType="com.square.checkin.entity.CheckInRecord" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO check_in_record (
+            user_id,
+            check_in_date,
+            check_in_time,
+            continuous_days,
+            created_at
+        ) VALUES (
+            #{userId},
+            #{checkInDate},
+            #{checkInTime},
+            #{continuousDays},
+            #{createdAt}
+        )
+    </insert>
+    
+    <!-- 根据用户ID和日期查询签到记录 -->
+    <select id="findByUserIdAndDate" resultMap="CheckInRecordMap">
+        SELECT 
+            id,
+            user_id,
+            check_in_date,
+            check_in_time,
+            continuous_days,
+            created_at
+        FROM check_in_record
+        WHERE user_id = #{userId}
+          AND check_in_date = #{checkInDate}
+        LIMIT 1
+    </select>
+    
+    <!-- 查询用户签到历史记录（分页） -->
+    <select id="findByUserId" resultMap="CheckInRecordMap">
+        SELECT 
+            id,
+            user_id,
+            check_in_date,
+            check_in_time,
+            continuous_days,
+            created_at
+        FROM check_in_record
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND check_in_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND check_in_date &lt;= #{endDate}
+        </if>
+        ORDER BY check_in_date DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <!-- 统计用户签到记录总数 -->
+    <select id="countByUserId" resultType="long">
+        SELECT COUNT(*)
+        FROM check_in_record
+        WHERE user_id = #{userId}
+        <if test="startDate != null">
+            AND check_in_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND check_in_date &lt;= #{endDate}
+        </if>
+    </select>
+    
+    <!-- 查询用户最近一次签到记录 -->
+    <select id="findLatestByUserId" resultMap="CheckInRecordMap">
+        SELECT 
+            id,
+            user_id,
+            check_in_date,
+            check_in_time,
+            continuous_days,
+            created_at
+        FROM check_in_record
+        WHERE user_id = #{userId}
+        ORDER BY check_in_date DESC
+        LIMIT 1
+    </select>
+    
+</mapper>
