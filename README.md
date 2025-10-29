@@ -1,460 +1,333 @@
-# 远程 Hello World 程序
+# 二叉树算法程序
 
-一个基于客户端-服务器架构的远程 Hello World 程序，展示分布式系统中最基本的远程通信模式。
+## 项目简介
+
+本项目实现了一个完整的二叉搜索树(Binary Search Tree, BST)算法程序，使用Java语言编写。提供了二叉树的核心操作，包括插入、删除、查找等基本功能，以及树的遍历、属性计算等辅助功能。
+
+本项目适用于学习和演示二叉树数据结构及其基本算法。
 
 ## 项目结构
 
 ```
-ao_test/
-├── server/                 # 服务端
-│   ├── main.go            # 服务端主程序
-│   ├── config/            # 配置管理
-│   │   └── config.go
-│   ├── models/            # 数据模型
-│   │   └── models.go
-│   ├── service/           # 业务服务
-│   │   ├── message_service.go
-│   │   └── message_service_test.go
-│   ├── middleware/        # 中间件
-│   │   ├── request_id.go
-│   │   ├── logger.go
-│   │   ├── cors.go
-│   │   └── error_handler.go
-│   └── handlers/          # API 处理器
-│       ├── hello_handler.go
-│       └── hello_handler_test.go
-├── client/                # 客户端
-│   └── main.go           # 客户端主程序
-├── go.mod                # Go 模块配置
-├── .env.example          # 环境变量示例
-├── start_server.sh       # 服务端启动脚本
-├── run_client.sh         # 客户端运行脚本
-└── README.md             # 项目说明文档
+.
+├── src/
+│   ├── main/java/com/square/binarytree/
+│   │   ├── TreeNode.java              # 树节点类
+│   │   ├── BinarySearchTree.java      # 二叉搜索树实现类
+│   │   └── Main.java                  # 演示程序
+│   └── test/java/com/square/binarytree/
+│       └── BinarySearchTreeTest.java  # 单元测试类
+├── pom.xml                            # Maven配置文件
+├── compile.sh                         # 编译脚本
+├── run.sh                            # 运行脚本
+├── run_tests.sh                      # 测试脚本
+└── README.md                         # 本文件
 ```
 
 ## 功能特性
 
-### 服务端功能
-- ✅ RESTful API 接口
-- ✅ 多语言支持 (中文、英文、西班牙语、法语)
-- ✅ 请求唯一标识生成
-- ✅ 结构化日志记录
-- ✅ CORS 跨域支持
-- ✅ 错误处理机制
-- ✅ 健康检查接口
-- ✅ 配置管理 (环境变量)
+### 核心功能
 
-### 客户端功能
-- ✅ 命令行界面
-- ✅ 请求重试机制
-- ✅ 超时控制
-- ✅ 友好的错误提示
-- ✅ 格式化输出结果
+1. **插入节点 (insert)**
+   - 支持插入整数值到二叉搜索树
+   - 自动维护BST性质（左小右大）
+   - 重复值会被忽略
 
-## API 接口
+2. **删除节点 (delete)**
+   - 支持删除指定值的节点
+   - 正确处理三种删除场景：
+     - 删除叶子节点
+     - 删除只有一个子节点的节点
+     - 删除有两个子节点的节点
+   - 删除后自动维护BST性质
 
-### 1. 基本问候接口
+3. **查找节点 (search/findNode)**
+   - 快速查找指定值是否存在
+   - 返回节点对象或布尔值
 
-**请求:**
-```bash
-GET /api/hello?name=张三&lang=zh
-```
+### 遍历功能
 
-**响应:**
-```json
-{
-  "message": "你好，张三！",
-  "timestamp": "2024-01-20T10:30:00Z",
-  "requestId": "req_abc123xyz"
-}
-```
+- **前序遍历** (preorderTraversal): 根-左-右
+- **中序遍历** (inorderTraversal): 左-根-右 (对BST结果有序)
+- **后序遍历** (postorderTraversal): 左-右-根
 
-### 2. 个性化问候接口
+### 辅助功能
 
-**请求:**
-```bash
-GET /api/hello/World
-```
+- **获取树的高度** (getHeight): 计算树的最大深度
+- **获取节点总数** (getSize): 统计树中节点数量
+- **判断是否为空** (isEmpty): 检查树是否为空树
+- **清空树** (clear): 清除所有节点
+- **打印树结构** (printTree): 可视化显示树的结构
+- **统计信息** (getStatistics): 获取树的各项统计数据
 
-**响应:**
-```json
-{
-  "message": "Hello World!",
-  "timestamp": "2024-01-20T10:30:00Z",
-  "requestId": "req_def456uvw"
-}
-```
+## 环境要求
 
-### 3. 健康检查接口
-
-**请求:**
-```bash
-GET /api/health
-```
-
-**响应:**
-```json
-{
-  "status": "healthy",
-  "uptime": 3600,
-  "version": "1.0.0"
-}
-```
+- **JDK**: 8 或更高版本
+- **Maven**: 3.6+ (可选，用于依赖管理)
+- **JUnit**: 5.9.3 (用于运行测试)
 
 ## 快速开始
 
-### 环境要求
-- Go 1.21 或更高版本
-- Linux/macOS/Windows 操作系统
+### 方法一：使用脚本运行
 
-### 安装依赖
+#### 1. 编译项目
 
 ```bash
-# 下载依赖
-go mod download
+./compile.sh
 ```
 
-### 启动服务端
-
-**方式一：使用启动脚本**
-```bash
-chmod +x start_server.sh
-./start_server.sh
-```
-
-**方式二：直接运行**
-```bash
-cd server
-go run main.go
-```
-
-服务端默认在 `http://localhost:8080` 启动
-
-### 使用客户端
-
-**方式一：使用运行脚本**
-```bash
-chmod +x run_client.sh
-
-# 基本问候
-./run_client.sh
-
-# 指定名称和语言
-./run_client.sh http://localhost:8080 --name=张三 --lang=zh
-
-# 健康检查
-./run_client.sh http://localhost:8080 --health
-
-# 查看帮助
-./run_client.sh --help
-```
-
-**方式二：直接运行**
-```bash
-cd client
-
-# 基本问候
-go run main.go
-
-# 指定参数
-go run main.go -name=张三 -lang=zh
-
-# 健康检查
-go run main.go -health
-
-# 自定义服务器地址
-go run main.go -server=http://localhost:8080 -name=World
-```
-
-## 配置说明
-
-### 服务端配置
-
-配置通过环境变量设置，支持的配置项：
-
-| 配置项 | 默认值 | 说明 |
-|--------|--------|------|
-| SERVER_PORT | 8080 | 服务监听端口 |
-| SERVER_HOST | 0.0.0.0 | 服务监听地址 |
-| LOG_LEVEL | info | 日志级别 (debug/info/warn/error) |
-| LOG_FORMAT | json | 日志格式 (json/text) |
-| CORS_ENABLED | true | 是否启用 CORS |
-| CORS_ORIGINS | * | 允许的源列表 (逗号分隔) |
-| MESSAGE_DEFAULT_LANG | en | 默认语言 |
-| APP_VERSION | 1.0.0 | 应用版本 |
-
-**使用方式：**
-
-1. 复制配置示例文件
-```bash
-cp .env.example .env
-```
-
-2. 修改 `.env` 文件中的配置项
-
-3. 启动服务端（自动加载配置）
-
-### 客户端配置
-
-客户端配置通过命令行参数设置：
-
-| 参数 | 默认值 | 说明 |
-|------|--------|------|
-| -server | http://localhost:8080 | 服务端地址 |
-| -timeout | 5000 | 请求超时时间(毫秒) |
-| -retry | true | 是否启用重试 |
-| -max-retry | 3 | 最大重试次数 |
-| -name | "" | 接收问候的对象名称 |
-| -lang | "" | 语言代码 |
-| -health | false | 检查服务健康状态 |
-| -version | false | 显示客户端版本 |
-
-## 支持的语言
-
-| 语言代码 | 语言名称 | 示例 |
-|----------|----------|------|
-| en | 英语 | Hello World! |
-| zh | 中文 | 你好，世界！ |
-| es | 西班牙语 | ¡Hola World! |
-| fr | 法语 | Bonjour World! |
-
-## 测试
-
-### 运行单元测试
+#### 2. 运行演示程序
 
 ```bash
-# 测试所有模块
-go test ./...
-
-# 测试服务层
-go test ./server/service -v
-
-# 测试处理器层
-go test ./server/handlers -v
-
-# 查看测试覆盖率
-go test ./... -cover
+./run.sh
 ```
 
-### 测试用例说明
+#### 3. 运行单元测试
 
-#### 消息服务测试 (message_service_test.go)
-- ✅ TC001: 无参数请求 - 返回默认问候
-- ✅ TC002: 指定名称 - 返回个性化问候
-- ✅ TC003: 指定中文语言 - 返回中文问候
-- ✅ TC004: 同时指定名称和语言 - 返回中文个性化问候
-- ✅ TC005: 不支持的语言 - 使用默认语言
-- ✅ TC006: 西班牙语问候
-- ✅ TC007: 法语问候
-- ✅ 名称验证测试
-- ✅ 语言验证测试
+```bash
+./run_tests.sh
+```
 
-#### API 处理器测试 (hello_handler_test.go)
-- ✅ TC001-TC004: GET /api/hello 接口测试
-- ✅ TC101-TC104: GET /api/hello/:name 接口测试
-- ✅ TC201-TC202: GET /api/health 接口测试
+### 方法二：使用Maven
+
+#### 1. 编译项目
+
+```bash
+mvn clean compile
+```
+
+#### 2. 运行演示程序
+
+```bash
+mvn exec:java
+```
+
+#### 3. 运行单元测试
+
+```bash
+mvn test
+```
+
+#### 4. 打包项目
+
+```bash
+mvn package
+```
+
+生成的JAR文件位于 `target/binary-tree-algorithm-1.0.0.jar`
+
+运行JAR包：
+```bash
+java -jar target/binary-tree-algorithm-1.0.0.jar
+```
+
+### 方法三：手动编译和运行
+
+#### 1. 编译源代码
+
+```bash
+mkdir -p target/classes
+javac -d target/classes -encoding UTF-8 src/main/java/com/square/binarytree/*.java
+```
+
+#### 2. 运行主程序
+
+```bash
+java -cp target/classes com.square.binarytree.Main
+```
 
 ## 使用示例
 
-### 示例 1: 基本问候
+### 基本使用
 
-**客户端:**
-```bash
-./run_client.sh
+```java
+// 创建二叉搜索树
+BinarySearchTree bst = new BinarySearchTree();
+
+// 插入节点
+bst.insert(50);
+bst.insert(30);
+bst.insert(70);
+bst.insert(20);
+bst.insert(40);
+
+// 打印树结构
+bst.printTree();
+
+// 查找节点
+boolean found = bst.search(30);  // true
+System.out.println("查找30: " + found);
+
+// 获取树的属性
+System.out.println("树的高度: " + bst.getHeight());
+System.out.println("节点总数: " + bst.getSize());
+
+// 遍历树
+List<Integer> inorder = bst.inorderTraversal();
+System.out.println("中序遍历: " + inorder);  // [20, 30, 40, 50, 70]
+
+// 删除节点
+bst.delete(30);
+System.out.println("删除30后的中序遍历: " + bst.inorderTraversal());
 ```
 
-**输出:**
-```
-连接到服务器: http://localhost:8080
-发送问候请求...
+### 演示程序输出
 
-========== 响应结果 ==========
-消息: Hello World!
-时间戳: 2024-01-20T10:30:00Z
-请求ID: req_abc123xyz
-==============================
-```
-
-### 示例 2: 中文个性化问候
-
-**客户端:**
-```bash
-./run_client.sh http://localhost:8080 --name=张三 --lang=zh
-```
-
-**输出:**
-```
-连接到服务器: http://localhost:8080
-发送问候请求...
-
-========== 响应结果 ==========
-消息: 你好，张三！
-时间戳: 2024-01-20T10:31:00Z
-请求ID: req_def456uvw
-==============================
-```
-
-### 示例 3: 健康检查
-
-**客户端:**
-```bash
-./run_client.sh http://localhost:8080 --health
-```
-
-**输出:**
-```
-连接到服务器: http://localhost:8080
-执行健康检查...
-
-========== 响应结果 ==========
-状态: healthy
-运行时长: 120 秒
-版本: 1.0.0
-==============================
-```
-
-### 示例 4: 使用 curl 测试
-
-```bash
-# 基本问候
-curl "http://localhost:8080/api/hello"
-
-# 指定参数
-curl "http://localhost:8080/api/hello?name=张三&lang=zh"
-
-# 个性化问候
-curl "http://localhost:8080/api/hello/World"
-
-# 健康检查
-curl "http://localhost:8080/api/health"
-```
-
-## 架构说明
-
-### 系统架构
+运行 `./run.sh` 后，你将看到：
 
 ```
-┌─────────────┐         HTTP          ┌─────────────┐
-│   客户端     │ ───────────────────> │   服务端     │
-│  (Client)   │ <─────────────────── │  (Server)   │
-└─────────────┘      JSON 响应        └─────────────┘
-                                            │
-                                            ├─ API 层
-                                            ├─ 服务层
-                                            ├─ 中间件层
-                                            └─ 配置层
+===========================================
+      二叉树算法程序演示
+===========================================
+
+【演示1：插入节点】
+--------------------------------------
+插入节点序列：
+50 30 70 20 40 60 80 10 25 35 65 
+
+========== 二叉树结构 ==========
+└── 50
+    ├── 30
+    │   ├── 20
+    │   │   ├── 10
+    │   │   └── 25
+    │   └── 40
+    │       └── 35
+    └── 70
+        ├── 60
+        │   └── 65
+        └── 80
+====================================
+
+【演示2：查找节点】
+--------------------------------------
+查找值 40: 找到 ✓
+查找值 65: 找到 ✓
+查找值 100: 未找到 ✗
+查找值 10: 找到 ✓
+
+... (更多演示输出)
 ```
 
-### 中间件执行链
+## 测试说明
 
-```
-请求 → 错误处理 → 请求ID → 日志 → CORS → 业务处理 → 响应
-```
+项目包含全面的单元测试，覆盖以下场景：
 
-### 业务流程
+### 插入操作测试
+- 插入单个节点
+- 插入多个节点
+- 插入重复值
+- 有序插入（退化为链表）
 
-```
-客户端发起请求
-    ↓
-生成请求ID
-    ↓
-记录请求日志
-    ↓
-参数验证
-    ↓
-消息生成服务
-    ↓
-返回JSON响应
-    ↓
-记录响应日志
-```
+### 查找操作测试
+- 空树查找
+- 查找存在的节点
+- 查找不存在的节点
 
-## 性能优化
+### 删除操作测试
+- 删除叶子节点
+- 删除只有一个子节点的节点
+- 删除有两个子节点的节点
+- 删除根节点
+- 删除不存在的节点
+- 从空树删除
 
-- ✅ 缓存消息模板，减少查找时间
-- ✅ 异步日志写入，避免阻塞
-- ✅ 结构化日志，提高解析效率
-- ✅ 无状态设计，支持水平扩展
+### 遍历操作测试
+- 中序遍历的有序性验证
+- 前序遍历
+- 后序遍历
+- 空树遍历
 
-## 安全考虑
+### 辅助方法测试
+- 树的高度计算
+- 树的大小计算
+- isEmpty方法
+- clear方法
 
-- ✅ 输入参数验证 (长度限制)
-- ✅ CORS 跨域控制
-- ✅ 错误信息脱敏
-- ✅ 请求唯一标识追踪
+### 综合场景测试
+- 连续插入和删除
+- 边界值测试
 
-## 部署建议
+运行测试后，你将看到详细的测试报告，包括通过的测试数量、失败的测试等信息。
 
-### 单机部署
-```bash
-# 1. 编译服务端
-cd server
-go build -o hello-server main.go
+## 性能分析
 
-# 2. 运行服务
-./hello-server
-```
+### 时间复杂度
 
-### Docker 部署
-可根据需要创建 Dockerfile：
-```dockerfile
-FROM golang:1.21-alpine
-WORKDIR /app
-COPY . .
-RUN go mod download
-RUN go build -o server ./server/main.go
-EXPOSE 8080
-CMD ["./server"]
-```
+| 操作 | 平均情况 | 最坏情况 | 说明 |
+|------|---------|---------|------|
+| 插入 | O(log n) | O(n) | 平衡树为O(log n)，退化为链表时为O(n) |
+| 删除 | O(log n) | O(n) | 同插入 |
+| 查找 | O(log n) | O(n) | 同插入 |
+| 遍历 | O(n) | O(n) | 需要访问所有节点 |
 
-### 负载均衡部署
-- 使用 Nginx 或其他负载均衡器
-- 启动多个服务实例
-- 配置健康检查路径: `/api/health`
+### 空间复杂度
 
-## 故障排查
+- 节点存储: O(n)，n为节点总数
+- 递归调用栈: O(h)，h为树的高度
 
-### 常见问题
+### 优化建议
 
-**1. 服务端启动失败**
-- 检查端口是否被占用: `lsof -i :8080`
-- 检查 Go 版本: `go version`
-- 检查依赖是否安装: `go mod download`
+1. **平衡性**: 当前实现是基础的BST，可能会退化为链表。可以扩展为AVL树或红黑树以保持平衡。
+2. **迭代实现**: 提供迭代版本的插入、删除、查找方法，避免递归调用栈开销。
+3. **泛型支持**: 扩展为支持泛型，不仅限于int类型。
 
-**2. 客户端连接失败**
-- 确认服务端已启动
-- 检查服务器地址是否正确
-- 检查防火墙设置
+## 设计文档
 
-**3. 测试失败**
-- 清理缓存: `go clean -testcache`
-- 重新运行: `go test ./... -v`
+详细的设计文档请参考：`/home/issuser/文档/codetest_r/ao_test/.qoder/quests/binary-tree-algorithm-design.md`
 
-## 扩展建议
+## 扩展方向
 
-### 功能扩展
-- [ ] 添加更多语言支持
-- [ ] 实现认证授权机制
-- [ ] 添加速率限制
-- [ ] 支持 WebSocket 连接
-- [ ] 添加 Metrics 监控
-- [ ] 实现配置热更新
+本项目预留了以下扩展点：
 
-### 性能优化
-- [ ] 添加响应缓存
-- [ ] 实现连接池
-- [ ] 启用 HTTP/2
-- [ ] 添加压缩中间件
+1. **支持泛型**: 使TreeNode和BinarySearchTree支持泛型类型
+2. **自定义比较器**: 支持自定义比较逻辑
+3. **平衡树**: 实现AVL树、红黑树等自平衡二叉搜索树
+4. **层序遍历**: 添加广度优先遍历
+5. **序列化**: 支持树的序列化和反序列化
+6. **可视化**: 图形界面展示树的结构
+7. **性能统计**: 添加操作计数和性能分析
 
-## 许可证
+## 常见问题
 
-本项目采用 MIT 许可证。
+### Q: 为什么有序插入会导致性能下降？
+
+A: 当按照升序或降序插入数据时，BST会退化为链表结构，导致所有操作的时间复杂度从O(log n)变为O(n)。为避免这个问题，可以：
+- 随机化插入顺序
+- 使用自平衡二叉树（如AVL树、红黑树）
+
+### Q: 如何选择删除节点时的替换策略？
+
+A: 删除有两个子节点的节点时，可以选择：
+- 右子树的最小节点（中序后继）- 本实现采用此策略
+- 左子树的最大节点（中序前驱）
+
+两种方法都能保持BST性质，选择哪种主要看个人偏好。
+
+### Q: 是否支持重复值？
+
+A: 当前实现忽略重复值的插入。如需支持重复值，可以：
+- 在节点中添加计数器
+- 允许重复值都插入到右子树
 
 ## 贡献指南
 
-欢迎提交 Issue 和 Pull Request！
+欢迎提交Issue和Pull Request来改进本项目！
 
----
+## 许可证
 
-**版本:** 1.0.0  
-**最后更新:** 2024-01-20
+本项目采用MIT许可证。
+
+## 作者
+
+Binary Tree Algorithm Design Team
+
+## 更新日志
+
+### v1.0.0 (2025-10-28)
+- 初始版本发布
+- 实现基础的BST操作（插入、删除、查找）
+- 实现三种遍历方法（前序、中序、后序）
+- 添加辅助功能（高度、大小、打印等）
+- 提供完整的单元测试
+- 添加演示程序
