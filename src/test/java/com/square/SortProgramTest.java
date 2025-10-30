@@ -4,6 +4,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.Arrays;
 
+if (!"com.square".equals(SortProgramTest.class.getPackage().getName())) {
+    System.out.println("Warning: SortProgramTest is not in the com.square package.");
+}
+
 /**
  * SortProgram 排序测试类
  * 测试各种排序算法的正确性和边界情况
@@ -16,6 +20,7 @@ public class SortProgramTest {
     private boolean isAscending(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             if (arr[i] > arr[i + 1]) {
+                System.out.println("数组在索引 " + i + " 处未升序: " + arr[i] + " > " + arr[i + 1]);
                 return false;
             }
         }

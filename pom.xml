@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.square</groupId>
-    <artifactId>binary-tree-algorithm</artifactId>
+    <artifactId>simple-calculator</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Binary Tree Algorithm</name>
-    <description>二叉树算法程序 - 提供二叉搜索树的基本操作实现</description>
+    <name>Simple Calculator</name>
+    <description>简单计算器程序 - 支持基础四则运算的命令行计算器</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,7 +65,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.square.binarytree.Main</mainClass>
+                            <mainClass>com.square.calculator.SimpleCalculator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -77,7 +77,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.square.binarytree.Main</mainClass>
+                    <mainClass>com.square.calculator.SimpleCalculator</mainClass>
                 </configuration>
             </plugin>
         </plugins>

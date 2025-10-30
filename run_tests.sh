@@ -1,66 +1,38 @@
 #!/bin/bash
-# 二叉树算法程序 - 测试脚本
 
-echo "=========================================="
-echo "  二叉树算法程序 - 运行测试"
-echo "=========================================="
+# 字符反转程序测试脚本
 
-# 创建目标目录
-mkdir -p target/classes target/test-classes
+echo "=== 编译主程序 ==="
+mkdir -p target/classes
+mkdir -p target/test-classes
 
-# 编译源代码
-echo "正在编译源代码..."
-javac -d target/classes -encoding UTF-8 src/main/java/com/square/binarytree/*.java
+javac -encoding UTF-8 -d target/classes src/main/java/com/square/StringReversal.java
 
 if [ $? -ne 0 ]; then
-    echo "✗ 源代码编译失败！"
+    echo "主程序编译失败！"
     exit 1
 fi
 
-echo "✓ 源代码编译成功"
+echo "主程序编译成功！"
+echo ""
 
-# 下载JUnit 5 JAR文件（如果不存在）
-JUNIT_PLATFORM_VERSION=1.9.3
-JUNIT_JUPITER_VERSION=5.9.3
+echo "=== 编译测试程序 ==="
+# 查找JUnit JAR文件
+JUNIT_JAR=$(find ~/.m2/repository/org/junit/jupiter/junit-jupiter-api -name "*.jar" 2>/dev/null | head -1)
 
-LIB_DIR="lib"
-mkdir -p $LIB_DIR
-
-JUNIT_PLATFORM_CONSOLE="$LIB_DIR/junit-platform-console-standalone-$JUNIT_PLATFORM_VERSION.jar"
-
-if [ ! -f "$JUNIT_PLATFORM_CONSOLE" ]; then
-    echo "正在下载JUnit依赖..."
-    wget -O "$JUNIT_PLATFORM_CONSOLE" \
-        "https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/$JUNIT_PLATFORM_VERSION/junit-platform-console-standalone-$JUNIT_PLATFORM_VERSION.jar"
-    
-    if [ $? -ne 0 ]; then
-        echo "✗ JUnit下载失败！请手动下载或使用Maven运行测试"
-        echo "提示: 可以使用Maven命令: mvn test"
-        exit 1
-    fi
-fi
-
-# 编译测试代码
-echo "正在编译测试代码..."
-javac -cp "target/classes:$JUNIT_PLATFORM_CONSOLE" \
-    -d target/test-classes -encoding UTF-8 \
-    src/test/java/com/square/binarytree/*.java
-
-if [ $? -ne 0 ]; then
-    echo "✗ 测试代码编译失败！"
+if [ -z "$JUNIT_JAR" ]; then
+    echo "未找到JUnit库，请先运行 mvn test 下载依赖"
     exit 1
 fi
 
-echo "✓ 测试代码编译成功"
+javac -encoding UTF-8 -cp "target/classes:$JUNIT_JAR" -d target/test-classes src/test/java/com/square/StringReversalTest.java
 
-# 运行测试
-echo ""
-echo "正在运行测试..."
-java -jar "$JUNIT_PLATFORM_CONSOLE" \
-    --class-path "target/classes:target/test-classes" \
-    --scan-class-path
-
-echo ""
-echo "=========================================="
-echo "  测试完成"
-echo "=========================================="
+if [ $? -eq 0 ]; then
+    echo "测试程序编译成功！"
+    echo ""
+    echo "=== 运行单元测试 ==="
+    mvn test -Dtest=StringReversalTest
+else
+    echo "测试程序编译失败！"
+    exit 1
+fi
