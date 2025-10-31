@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.square.checkin.repository.UserCheckInStatsRepository">
+    
+    <!-- 结果映射 -->
+    <resultMap id="UserCheckInStatsMap" type="com.square.checkin.entity.UserCheckInStats">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="total_days" property="totalDays"/>
+        <result column="continuous_days" property="continuousDays"/>
+        <result column="max_continuous_days" property="maxContinuousDays"/>
+        <result column="last_check_in_date" property="lastCheckInDate"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+    
+    <!-- 插入用户统计记录 -->
+    <insert id="insert" parameterType="com.square.checkin.entity.UserCheckInStats" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_check_in_stats (
+            user_id,
+            total_days,
+            continuous_days,
+            max_continuous_days,
+            last_check_in_date,
+            created_at,
+            updated_at
+        ) VALUES (
+            #{userId},
+            #{totalDays},
+            #{continuousDays},
+            #{maxContinuousDays},
+            #{lastCheckInDate},
+            #{createdAt},
+            #{updatedAt}
+        )
+    </insert>
+    
+    <!-- 根据用户ID查询统计信息 -->
+    <select id="findByUserId" resultMap="UserCheckInStatsMap">
+        SELECT 
+            id,
+            user_id,
+            total_days,
+            continuous_days,
+            max_continuous_days,
+            last_check_in_date,
+            created_at,
+            updated_at
+        FROM user_check_in_stats
+        WHERE user_id = #{userId}
+        LIMIT 1
+    </select>
+    
+    <!-- 更新用户统计信息 -->
+    <update id="update" parameterType="com.square.checkin.entity.UserCheckInStats">
+        UPDATE user_check_in_stats
+        SET total_days = #{totalDays},
+            continuous_days = #{continuousDays},
+            max_continuous_days = #{maxContinuousDays},
+            last_check_in_date = #{lastCheckInDate},
+            updated_at = #{updatedAt}
+        WHERE user_id = #{userId}
+    </update>
+    
+    <!-- 根据用户ID删除统计记录 -->
+    <delete id="deleteByUserId">
+        DELETE FROM user_check_in_stats
+        WHERE user_id = #{userId}
+    </delete>
+    
+</mapper>
