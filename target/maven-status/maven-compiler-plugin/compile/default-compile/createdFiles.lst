@@ -1,0 +1,14 @@
+com/truck/domain/Truck.class
+com/square/SquareCalculator.class
+com/square/Addition.class
+com/truck/TruckManagementApp.class
+com/truck/repository/impl/InMemoryTruckRepository.class
+com/truck/domain/TruckBrand.class
+com/truck/controller/TruckController.class
+com/truck/service/impl/TruckServiceImpl.class
+com/square/PlusOneCalculator.class
+com/square/Square.class
+com/truck/repository/TruckRepository.class
+com/square/AdditionCalculator.class
+com/truck/service/TruckService.class
+com/truck/domain/TruckStatus.class

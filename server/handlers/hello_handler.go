@@ -16,6 +16,8 @@ type HelloHandler struct {
 	messageService *service.MessageService
 	startTime      time.Time
 	version        string
+	totalRequests  int64
+	activeRequests int
 }
 
 // NewHelloHandler 创建处理器实例
@@ -30,6 +32,12 @@ func NewHelloHandler(messageService *service.MessageService, version string) *He
 // GetHello 处理基本问候请求
 // GET /api/hello?name=xxx&lang=xxx
 func (h *HelloHandler) GetHello(c *gin.Context) {
+	h.activeRequests++
+	defer func() {
+		h.activeRequests--
+		h.totalRequests++
+	}()
+	
 	var req models.HelloRequest
 	
 	// 绑定查询参数
@@ -53,6 +61,12 @@ func (h *HelloHandler) GetHello(c *gin.Context) {
 // GetHelloWithName 处理个性化问候请求
 // GET /api/hello/:name
 func (h *HelloHandler) GetHelloWithName(c *gin.Context) {
+	h.activeRequests++
+	defer func() {
+		h.activeRequests--
+		h.totalRequests++
+	}()
+	
 	name := c.Param("name")
 	
 	// 验证名称参数
@@ -91,6 +105,24 @@ func (h *HelloHandler) GetHealth(c *gin.Context) {
 		Status:  "healthy",
 		Uptime:  int64(uptime),
 		Version: h.version,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// GetStats 处理系统统计请求
+// GET /api/stats
+func (h *HelloHandler) GetStats(c *gin.Context) {
+	uptime := time.Since(h.startTime).Seconds()
+	requestID := middleware.GetRequestID(c)
+
+	response := models.StatsResponse{
+		TotalRequests:  h.totalRequests,
+		ActiveRequests: h.activeRequests,
+		Uptime:         int64(uptime),
+		StartTime:      h.startTime.UTC().Format(time.RFC3339),
+		Version:        h.version,
+		RequestID:      requestID,
 	}
 
 	c.JSON(http.StatusOK, response)
