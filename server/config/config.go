@@ -36,6 +36,8 @@ type Config struct {
 	CORS    CORSConfig
 	Message MessageConfig
 	Version string
+	// 新增环境配置项
+	Environment string
 }
 
 // LoadConfig 加载配置
@@ -57,6 +59,8 @@ func LoadConfig() *Config {
 			DefaultLang: getEnv("MESSAGE_DEFAULT_LANG", "en"),
 		},
 		Version: getEnv("APP_VERSION", "1.0.0"),
+		// 新增环境配置项
+		Environment: getEnv("ENVIRONMENT", "development"),
 	}
 }
 
