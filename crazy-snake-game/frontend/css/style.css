@@ -1,0 +1,308 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 30px;
+    max-width: 900px;
+    width: 95%;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-header h1 {
+    color: #667eea;
+    font-size: 2.5em;
+}
+
+.user-info {
+    background: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+/* 认证页面 */
+.auth-page {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.auth-box {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.auth-box h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.auth-box button {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.auth-box button:hover {
+    background: #5568d3;
+}
+
+.auth-box p {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.auth-box a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+/* 主菜单 */
+.menu-box {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.menu-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    font-size: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.menu-btn:hover {
+    transform: scale(1.05);
+}
+
+/* 游戏页面 */
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    background: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.info-item {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.active-effects {
+    min-height: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.effect-badge {
+    background: #ffd700;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+#gameCanvas {
+    display: block;
+    margin: 0 auto;
+    border: 3px solid #667eea;
+    border-radius: 10px;
+    background: #f5f5f5;
+}
+
+.game-controls {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.game-controls button {
+    padding: 10px 30px;
+    margin: 0 10px;
+    font-size: 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.game-controls button:hover {
+    background: #5568d3;
+}
+
+.game-instructions {
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+}
+
+/* 排行榜 */
+.ranking-tabs {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 30px;
+    margin: 0 10px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+#rankingsList, #recordsList {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.ranking-item, .record-item {
+    background: #f9f9f9;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ranking-item.top3 {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    font-weight: bold;
+}
+
+.back-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 40px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-btn:hover {
+    background: #5568d3;
+}
+
+/* 弹窗 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.modal-content h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.modal-content button {
+    padding: 12px 30px;
+    margin: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content button:hover {
+    background: #5568d3;
+}
+
+#logoutBtn {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logoutBtn:hover {
+    background: #ee5a52;
+}
