@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>疯狂蟒蛇游戏</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🐍 疯狂蟒蛇游戏</h1>
+            <div class="user-info" id="userInfo">
+                <span id="username">未登录</span>
+                <button id="logoutBtn" style="display:none;">退出</button>
+            </div>
+        </div>
+
+        <!-- 登录/注册页面 -->
+        <div id="authPage" class="auth-page">
+            <div class="auth-box">
+                <h2>登录</h2>
+                <form id="loginForm">
+                    <input type="text" id="loginUsername" placeholder="用户名" required>
+                    <input type="password" id="loginPassword" placeholder="密码" required>
+                    <button type="submit">登录</button>
+                </form>
+                <p>还没有账号? <a href="#" id="showRegister">立即注册</a></p>
+            </div>
+
+            <div class="auth-box" id="registerBox" style="display:none;">
+                <h2>注册</h2>
+                <form id="registerForm">
+                    <input type="text" id="regUsername" placeholder="用户名(3-20字符)" required>
+                    <input type="password" id="regPassword" placeholder="密码(6-30字符)" required>
+                    <input type="email" id="regEmail" placeholder="邮箱(可选)">
+                    <button type="submit">注册</button>
+                </form>
+                <p>已有账号? <a href="#" id="showLogin">返回登录</a></p>
+            </div>
+        </div>
+
+        <!-- 主菜单页面 -->
+        <div id="menuPage" class="menu-page" style="display:none;">
+            <div class="menu-box">
+                <button class="menu-btn" id="startGameBtn">🎮 开始游戏</button>
+                <button class="menu-btn" id="rankingsBtn">🏆 排行榜</button>
+                <button class="menu-btn" id="recordsBtn">📊 我的记录</button>
+            </div>
+        </div>
+
+        <!-- 游戏页面 -->
+        <div id="gamePage" class="game-page" style="display:none;">
+            <div class="game-info">
+                <div class="info-item">
+                    <span>分数: </span><span id="score">0</span>
+                </div>
+                <div class="info-item">
+                    <span>阶段: </span><span id="stage">1</span>
+                </div>
+                <div class="info-item">
+                    <span>长度: </span><span id="length">3</span>
+                </div>
+                <div class="info-item">
+                    <span>时间: </span><span id="time">0</span>秒
+                </div>
+            </div>
+            <div class="active-effects" id="activeEffects"></div>
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div class="game-controls">
+                <button id="pauseBtn">暂停</button>
+                <button id="backToMenuBtn">返回菜单</button>
+            </div>
+            <div class="game-instructions">
+                <p>⬆️⬇️⬅️➡️ 方向键控制 | 空格键暂停</p>
+            </div>
+        </div>
+
+        <!-- 排行榜页面 -->
+        <div id="rankingsPage" class="rankings-page" style="display:none;">
+            <h2>排行榜</h2>
+            <div class="ranking-tabs">
+                <button class="tab-btn active" id="globalTab">全球排行</button>
+                <button class="tab-btn" id="dailyTab">今日排行</button>
+            </div>
+            <div id="rankingsList"></div>
+            <button class="back-btn" id="backFromRankings">返回</button>
+        </div>
+
+        <!-- 游戏记录页面 -->
+        <div id="recordsPage" class="records-page" style="display:none;">
+            <h2>我的游戏记录</h2>
+            <div id="recordsList"></div>
+            <button class="back-btn" id="backFromRecords">返回</button>
+        </div>
+
+        <!-- 游戏结束弹窗 -->
+        <div id="gameOverModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h2>游戏结束!</h2>
+                <p>最终得分: <span id="finalScore">0</span></p>
+                <p>最大长度: <span id="finalLength">0</span></p>
+                <p>游戏时长: <span id="finalTime">0</span>秒</p>
+                <p>最高阶段: <span id="finalStage">0</span></p>
+                <p id="newRecord" style="display:none;color:gold;">🎉 新纪录!</p>
+                <p>全球排名: <span id="globalRank">-</span></p>
+                <button id="restartBtn">再来一局</button>
+                <button id="backToMenuFromOver">返回菜单</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/game.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
